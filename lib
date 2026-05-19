@@ -1,6 +1,5 @@
 -- ============================================
--- UI LIBRARY BY Angry66gsjjd
--- Версия 2.0
+-- ПРОСТАЯ GUI БИБЛИОТЕКА (РАБОЧАЯ)
 -- ============================================
 
 local Library = {}
@@ -8,114 +7,54 @@ local Library = {}
 -- НАСТРОЙКИ
 Library.Settings = {
     Theme = {
-        Dark = {
-            Background = Color3.fromRGB(20, 20, 25),
-            Header = Color3.fromRGB(30, 30, 38),
-            Button = Color3.fromRGB(45, 45, 55),
-            ButtonHover = Color3.fromRGB(60, 60, 75),
-            Text = Color3.fromRGB(255, 255, 255),
-            Accent = Color3.fromRGB(100, 150, 255),
-            Section = Color3.fromRGB(28, 28, 35),
-            Border = Color3.fromRGB(50, 50, 65)
-        },
-        Light = {
-            Background = Color3.fromRGB(240, 240, 245),
-            Header = Color3.fromRGB(220, 220, 230),
-            Button = Color3.fromRGB(200, 200, 210),
-            ButtonHover = Color3.fromRGB(180, 180, 195),
-            Text = Color3.fromRGB(30, 30, 40),
-            Accent = Color3.fromRGB(80, 130, 255),
-            Section = Color3.fromRGB(230, 230, 238),
-            Border = Color3.fromRGB(180, 180, 200)
-        }
+        Background = Color3.fromRGB(25, 25, 35),
+        Header = Color3.fromRGB(40, 40, 55),
+        Button = Color3.fromRGB(60, 60, 85),
+        ButtonHover = Color3.fromRGB(80, 80, 110),
+        Text = Color3.fromRGB(255, 255, 255),
+        Accent = Color3.fromRGB(100, 150, 255),
+        Section = Color3.fromRGB(35, 35, 50)
     },
-    CurrentTheme = "Dark",
     Width = 340,
-    Height = 480,
-    CornerRadius = 8
+    Height = 480
 }
-
--- ПЕРЕКЛЮЧЕНИЕ ТЕМЫ
-function Library:SetTheme(theme)
-    if theme == "Dark" or theme == "Light" then
-        Library.Settings.CurrentTheme = theme
-        local t = Library.Settings.Theme[theme]
-        
-        -- Обновляем все элементы
-        if Library.MainFrame then
-            Library.MainFrame.BackgroundColor3 = t.Background
-            Library.MainFrame.BorderColor3 = t.Accent
-            Library.Header.BackgroundColor3 = t.Header
-            Library.Header.TextColor3 = t.Text
-        end
-        
-        -- Обновляем все секции и кнопки
-        for _, section in pairs(Library.Sections or {}) do
-            if section.Frame then
-                section.Frame.BackgroundColor3 = t.Section
-                section.Frame.BorderColor3 = t.Accent
-                if section.Title then
-                    section.Title.TextColor3 = t.Text
-                end
-            end
-        end
-        
-        for _, btn in pairs(Library.Buttons or {}) do
-            if btn then
-                btn.BackgroundColor3 = t.Button
-                btn.TextColor3 = t.Text
-            end
-        end
-    end
-end
 
 -- ОСНОВНОЕ ОКНО
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "CustomGUI"
 ScreenGui.Parent = game:GetService("CoreGui")
 ScreenGui.ResetOnSpawn = false
-ScreenGui.Enabled = false
+ScreenGui.Enabled = false  -- Скрыто по умолчанию
 
 local MainFrame = Instance.new("Frame")
 MainFrame.Parent = ScreenGui
 MainFrame.Size = UDim2.new(0, Library.Settings.Width, 0, Library.Settings.Height)
 MainFrame.Position = UDim2.new(0.5, -Library.Settings.Width/2, 0.5, -Library.Settings.Height/2)
-MainFrame.BackgroundColor3 = Library.Settings.Theme.Dark.Background
+MainFrame.BackgroundColor3 = Library.Settings.Theme.Background
 MainFrame.BorderSizePixel = 2
-MainFrame.BorderColor3 = Library.Settings.Theme.Dark.Accent
+MainFrame.BorderColor3 = Library.Settings.Theme.Accent
 MainFrame.Active = true
 MainFrame.Draggable = true
-Library.MainFrame = MainFrame
-
--- СКРУГЛЕНИЕ УГЛОВ
-local Corner = Instance.new("UICorner")
-Corner.Parent = MainFrame
-Corner.CornerRadius = UDim.new(0, Library.Settings.CornerRadius)
 
 -- ЗАГОЛОВОК
 local Header = Instance.new("TextLabel")
 Header.Parent = MainFrame
-Header.Size = UDim2.new(1, 0, 0, 38)
+Header.Size = UDim2.new(1, 0, 0, 35)
 Header.Position = UDim2.new(0, 0, 0, 0)
-Header.BackgroundColor3 = Library.Settings.Theme.Dark.Header
+Header.BackgroundColor3 = Library.Settings.Theme.Header
 Header.Text = "AUTO ASC1 + WEIGHT"
-Header.TextColor3 = Library.Settings.Theme.Dark.Text
+Header.TextColor3 = Library.Settings.Theme.Text
 Header.Font = Enum.Font.GothamBold
 Header.TextSize = 14
-Library.Header = Header
-
-local HeaderCorner = Instance.new("UICorner")
-HeaderCorner.Parent = Header
-HeaderCorner.CornerRadius = UDim.new(0, Library.Settings.CornerRadius)
 
 -- КНОПКА ЗАКРЫТИЯ
 local CloseBtn = Instance.new("TextButton")
 CloseBtn.Parent = Header
-CloseBtn.Size = UDim2.new(0, 40, 1, 0)
-CloseBtn.Position = UDim2.new(1, -40, 0, 0)
+CloseBtn.Size = UDim2.new(0, 35, 1, 0)
+CloseBtn.Position = UDim2.new(1, -35, 0, 0)
 CloseBtn.BackgroundTransparency = 1
 CloseBtn.Text = "✕"
-CloseBtn.TextColor3 = Library.Settings.Theme.Dark.Text
+CloseBtn.TextColor3 = Library.Settings.Theme.Text
 CloseBtn.TextSize = 16
 CloseBtn.MouseButton1Click:Connect(function()
     ScreenGui.Enabled = false
@@ -124,20 +63,16 @@ end)
 -- СКРОЛЛИНГ ФРЕЙМ
 local ScrollFrame = Instance.new("ScrollingFrame")
 ScrollFrame.Parent = MainFrame
-ScrollFrame.Size = UDim2.new(1, 0, 1, -38)
-ScrollFrame.Position = UDim2.new(0, 0, 0, 38)
+ScrollFrame.Size = UDim2.new(1, 0, 1, -35)
+ScrollFrame.Position = UDim2.new(0, 0, 0, 35)
 ScrollFrame.BackgroundTransparency = 1
 ScrollFrame.ScrollBarThickness = 4
 ScrollFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
 
-local ScrollCorner = Instance.new("UICorner")
-ScrollCorner.Parent = ScrollFrame
-ScrollCorner.CornerRadius = UDim.new(0, Library.Settings.CornerRadius)
-
 local ScrollList = Instance.new("UIListLayout")
 ScrollList.Parent = ScrollFrame
 ScrollList.SortOrder = Enum.SortOrder.LayoutOrder
-ScrollList.Padding = UDim.new(0, 6)
+ScrollList.Padding = UDim.new(0, 5)
 
 local ScrollPadding = Instance.new("UIPadding")
 ScrollPadding.Parent = ScrollFrame
@@ -168,24 +103,16 @@ game:GetService("UserInputService").InputEnded:Connect(function(input)
     end
 end)
 
--- ХРАНИЛИЩА
-Library.Sections = {}
-Library.Buttons = {}
-
 -- ============= МЕТОДЫ БИБЛИОТЕКИ =============
 
 -- СОЗДАНИЕ СЕКЦИИ
 function Library:Section(title)
     local section = Instance.new("Frame")
     section.Parent = ScrollFrame
-    section.Size = UDim2.new(1, 0, 0, 36)
-    section.BackgroundColor3 = Library.Settings.Theme[Library.Settings.CurrentTheme].Section
+    section.Size = UDim2.new(1, 0, 0, 35)
+    section.BackgroundColor3 = Library.Settings.Theme.Section
     section.BorderSizePixel = 1
-    section.BorderColor3 = Library.Settings.Theme[Library.Settings.CurrentTheme].Accent
-    
-    local sectionCorner = Instance.new("UICorner")
-    sectionCorner.Parent = section
-    sectionCorner.CornerRadius = UDim.new(0, 5)
+    section.BorderColor3 = Library.Settings.Theme.Accent
     
     local titleLabel = Instance.new("TextLabel")
     titleLabel.Parent = section
@@ -193,11 +120,12 @@ function Library:Section(title)
     titleLabel.Position = UDim2.new(0, 10, 0, 0)
     titleLabel.BackgroundTransparency = 1
     titleLabel.Text = title
-    titleLabel.TextColor3 = Library.Settings.Theme[Library.Settings.CurrentTheme].Text
+    titleLabel.TextColor3 = Library.Settings.Theme.Text
     titleLabel.TextXAlignment = Enum.TextXAlignment.Left
     titleLabel.Font = Enum.Font.GothamBold
     titleLabel.TextSize = 13
     
+    -- Контейнер для элементов
     local container = Instance.new("Frame")
     container.Parent = ScrollFrame
     container.Size = UDim2.new(1, 0, 0, 0)
@@ -210,14 +138,12 @@ function Library:Section(title)
     
     local function updateSize()
         local totalHeight = containerList.AbsoluteContentSize.Y
-        container.Size = UDim2.new(1, 0, 0, totalHeight + 8)
+        container.Size = UDim2.new(1, 0, 0, totalHeight + 5)
         ScrollFrame.CanvasSize = UDim2.new(0, 0, 0, ScrollList.AbsoluteContentSize.Y + 20)
     end
     
     containerList:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateSize)
     updateSize()
-    
-    table.insert(Library.Sections, {Frame = section, Title = titleLabel, Container = container})
     
     return container
 end
@@ -226,102 +152,37 @@ end
 function Library:Button(parent, text, callback)
     local btn = Instance.new("TextButton")
     btn.Parent = parent
-    btn.Size = UDim2.new(1, 0, 0, 34)
-    btn.BackgroundColor3 = Library.Settings.Theme[Library.Settings.CurrentTheme].Button
+    btn.Size = UDim2.new(1, 0, 0, 32)
+    btn.BackgroundColor3 = Library.Settings.Theme.Button
     btn.Text = text
-    btn.TextColor3 = Library.Settings.Theme[Library.Settings.CurrentTheme].Text
+    btn.TextColor3 = Library.Settings.Theme.Text
     btn.Font = Enum.Font.Gotham
     btn.TextSize = 13
     
-    local btnCorner = Instance.new("UICorner")
-    btnCorner.Parent = btn
-    btnCorner.CornerRadius = UDim.new(0, 5)
-    
     btn.MouseEnter:Connect(function()
-        btn.BackgroundColor3 = Library.Settings.Theme[Library.Settings.CurrentTheme].ButtonHover
+        btn.BackgroundColor3 = Library.Settings.Theme.ButtonHover
     end)
     
     btn.MouseLeave:Connect(function()
-        btn.BackgroundColor3 = Library.Settings.Theme[Library.Settings.CurrentTheme].Button
+        btn.BackgroundColor3 = Library.Settings.Theme.Button
     end)
     
     btn.MouseButton1Click:Connect(callback)
-    table.insert(Library.Buttons, btn)
     return btn
 end
 
 -- СОЗДАНИЕ ТЕКСТА
-function Library:Label(parent, text, color)
+function Library:Label(parent, text)
     local lbl = Instance.new("TextLabel")
     lbl.Parent = parent
     lbl.Size = UDim2.new(1, 0, 0, 24)
     lbl.BackgroundTransparency = 1
     lbl.Text = text
-    lbl.TextColor3 = color or Library.Settings.Theme[Library.Settings.CurrentTheme].Text
+    lbl.TextColor3 = Library.Settings.Theme.Text
     lbl.TextXAlignment = Enum.TextXAlignment.Left
     lbl.Font = Enum.Font.Gotham
     lbl.TextSize = 12
     return lbl
-end
-
--- СОЗДАНИЕ ТОГГЛА
-function Library:Toggle(parent, text, callback, defaultValue)
-    local frame = Instance.new("Frame")
-    frame.Parent = parent
-    frame.Size = UDim2.new(1, 0, 0, 32)
-    frame.BackgroundTransparency = 1
-    
-    local label = Instance.new("TextLabel")
-    label.Parent = frame
-    label.Size = UDim2.new(1, -55, 1, 0)
-    label.BackgroundTransparency = 1
-    label.Text = text
-    label.TextColor3 = Library.Settings.Theme[Library.Settings.CurrentTheme].Text
-    label.TextXAlignment = Enum.TextXAlignment.Left
-    label.Font = Enum.Font.Gotham
-    label.TextSize = 12
-    
-    local toggleBtn = Instance.new("TextButton")
-    toggleBtn.Parent = frame
-    toggleBtn.Size = UDim2.new(0, 44, 0, 24)
-    toggleBtn.Position = UDim2.new(1, -48, 0.5, -12)
-    toggleBtn.BackgroundColor3 = Library.Settings.Theme[Library.Settings.CurrentTheme].Button
-    toggleBtn.Text = ""
-    
-    local toggleBtnCorner = Instance.new("UICorner")
-    toggleBtnCorner.Parent = toggleBtn
-    toggleBtnCorner.CornerRadius = UDim.new(1, 0)
-    
-    local toggleIndicator = Instance.new("Frame")
-    toggleIndicator.Parent = toggleBtn
-    toggleIndicator.Size = UDim2.new(0, 20, 0, 20)
-    toggleIndicator.Position = UDim2.new(0, 2, 0.5, -10)
-    toggleIndicator.BackgroundColor3 = Library.Settings.Theme[Library.Settings.CurrentTheme].Text
-    
-    local indicatorCorner = Instance.new("UICorner")
-    indicatorCorner.Parent = toggleIndicator
-    indicatorCorner.CornerRadius = UDim.new(1, 0)
-    
-    local state = defaultValue or false
-    
-    local function updateToggle()
-        if state then
-            toggleBtn.BackgroundColor3 = Library.Settings.Theme[Library.Settings.CurrentTheme].Accent
-            toggleIndicator.Position = UDim2.new(1, -22, 0.5, -10)
-        else
-            toggleBtn.BackgroundColor3 = Library.Settings.Theme[Library.Settings.CurrentTheme].Button
-            toggleIndicator.Position = UDim2.new(0, 2, 0.5, -10)
-        end
-    end
-    
-    toggleBtn.MouseButton1Click:Connect(function()
-        state = not state
-        updateToggle()
-        if callback then callback(state) end
-    end)
-    
-    updateToggle()
-    return {Set = function(_, val) state = val; updateToggle() end}
 end
 
 -- УВЕДОМЛЕНИЕ
@@ -330,34 +191,30 @@ function Library:Notify(title, message, duration)
     
     local notify = Instance.new("Frame")
     notify.Parent = ScreenGui
-    notify.Size = UDim2.new(0, 260, 0, 65)
-    notify.Position = UDim2.new(1, -280, 0, 15)
-    notify.BackgroundColor3 = Library.Settings.Theme[Library.Settings.CurrentTheme].Background
+    notify.Size = UDim2.new(0, 250, 0, 60)
+    notify.Position = UDim2.new(1, -260, 0, 10)
+    notify.BackgroundColor3 = Library.Settings.Theme.Background
     notify.BorderSizePixel = 1
-    notify.BorderColor3 = Library.Settings.Theme[Library.Settings.CurrentTheme].Accent
-    
-    local notifyCorner = Instance.new("UICorner")
-    notifyCorner.Parent = notify
-    notifyCorner.CornerRadius = UDim.new(0, 6)
+    notify.BorderColor3 = Library.Settings.Theme.Accent
     
     local titleLbl = Instance.new("TextLabel")
     titleLbl.Parent = notify
-    titleLbl.Size = UDim2.new(1, -10, 0, 22)
+    titleLbl.Size = UDim2.new(1, -10, 0, 20)
     titleLbl.Position = UDim2.new(0, 5, 0, 2)
     titleLbl.BackgroundTransparency = 1
     titleLbl.Text = title
-    titleLbl.TextColor3 = Library.Settings.Theme[Library.Settings.CurrentTheme].Accent
+    titleLbl.TextColor3 = Library.Settings.Theme.Accent
     titleLbl.TextXAlignment = Enum.TextXAlignment.Left
     titleLbl.Font = Enum.Font.GothamBold
     titleLbl.TextSize = 12
     
     local msgLbl = Instance.new("TextLabel")
     msgLbl.Parent = notify
-    msgLbl.Size = UDim2.new(1, -10, 0, 28)
-    msgLbl.Position = UDim2.new(0, 5, 0, 24)
+    msgLbl.Size = UDim2.new(1, -10, 0, 25)
+    msgLbl.Position = UDim2.new(0, 5, 0, 22)
     msgLbl.BackgroundTransparency = 1
     msgLbl.Text = message
-    msgLbl.TextColor3 = Library.Settings.Theme[Library.Settings.CurrentTheme].Text
+    msgLbl.TextColor3 = Library.Settings.Theme.Text
     msgLbl.TextXAlignment = Enum.TextXAlignment.Left
     msgLbl.TextWrapped = true
     msgLbl.Font = Enum.Font.Gotham
@@ -365,11 +222,7 @@ function Library:Notify(title, message, duration)
     
     task.spawn(function()
         task.wait(duration)
-        local tween = game:GetService("TweenService"):Create(notify, TweenInfo.new(0.3), {Position = UDim2.new(1, -280, 0, -80)})
-        tween:Play()
-        tween.Completed:Connect(function()
-            notify:Destroy()
-        end)
+        notify:Destroy()
     end)
 end
 
@@ -378,14 +231,14 @@ function Library:Toggle()
     ScreenGui.Enabled = not ScreenGui.Enabled
 end
 
--- ОТКРЫТЬ
 function Library:Open()
     ScreenGui.Enabled = true
 end
 
--- ЗАКРЫТЬ
 function Library:Close()
     ScreenGui.Enabled = false
 end
+
+print("✅ Library loaded! Press P or Insert to open GUI")
 
 return Library
